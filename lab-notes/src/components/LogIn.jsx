@@ -2,8 +2,6 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -12,9 +10,17 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
 import Banner from './Banner';
+import ButtonGoogle from './ButtonGoogle';
 
 
-const theme = createTheme();
+const darkTheme = createTheme({
+    palette: {
+        mode: 'dark',
+        primary: {
+            main: '#1976d2',
+        },
+    },
+});
 
 export default function LogIn() {
     const handleSubmit = (event) => {
@@ -27,11 +33,11 @@ export default function LogIn() {
     };
 
     return (
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={darkTheme}>
             <Grid container component="main" sx={{ height: '100vh' }}>
                 <CssBaseline />
                 <Banner></Banner>
-                <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square sx={{ backgroundColor: '#6719F8' }}>
+                <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square sx={{ backgroundColor: '#6719F8', px:3 }}>
                     <Link to='/'>
                         <Box sx={{ my: 9, mx: 4, display: 'flex', alignItems: 'end' }}>
                             <ClearIcon sx={{ border: 'solid #ffffff', color: '#ffffff', borderRadius: '20px' }}></ClearIcon>
@@ -55,7 +61,7 @@ export default function LogIn() {
                                 required
                                 fullWidth
                                 id="email"
-                                label="Email Address"
+                                label="Email:"
                                 name="email"
                                 autoComplete="email"
                                 autoFocus
@@ -65,23 +71,20 @@ export default function LogIn() {
                                 required
                                 fullWidth
                                 name="password"
-                                label="Password"
+                                label="Password:"
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
-                            />
-                            <FormControlLabel
-                                control={<Checkbox value="remember" color="primary" />}
-                                label="Remember me"
                             />
                             <Button
                                 type="submit"
                                 fullWidth
                                 variant="contained"
-                                sx={{ mt: 3, mb: 2 }}
+                                sx={{ mt: 1, mb: 2,backgroundColor: '#000000', borderRadius: '20px', minHeight: '39px'}}
                             >
-                                Sign In
+                                INGRESAR
                             </Button>
+                            <ButtonGoogle></ButtonGoogle>
                         </Box>
                     </Box>
                 </Grid>
