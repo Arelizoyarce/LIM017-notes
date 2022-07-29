@@ -70,7 +70,7 @@ export default function WelcomePage() {
                             component="img"
                             height="300"
                             image="https://user-images.githubusercontent.com/98667463/181664348-85966d11-a539-43cb-ae14-000df1a88742.png"
-                            alt="Paella dish"
+                            alt="Lab Notes"
                         />
 
                         <Link to='/register'>

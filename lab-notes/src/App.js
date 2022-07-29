@@ -5,9 +5,9 @@ import {
   Routes
 } from "react-router-dom";
 
-import WelcomePage from "./components/Welcome";
-import Register from "./components/Register";
-import LogIn from "./components/LogIn";
+import WelcomePage from "./components/Init/Welcome";
+import Register from "./components/Init/Register/Register";
+import LogIn from "./components/Init/LogIn/LogIn";
 
 function App() {
   return (
