@@ -8,19 +8,11 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import ClearIcon from '@mui/icons-material/Clear';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Banner from '../Banner';
 import ButtonGoogle from './ButtonGoogle';
+import {singIn} from '../../../services/firebase.js'
 
-
-// const darkTheme = createTheme({
-//     palette: {
-//         mode: 'dark',
-//         primary: {
-//             main: '#1976d2',
-//         },
-//     },
-// });
 
 
 const theme = createTheme({
@@ -55,15 +47,18 @@ const theme = createTheme({
         tonalOffset: 0.2,
     },
 });
-
 export default function LogIn() {
+    const navigate = useNavigate()
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+        const user= data.get('email');
+        const password= data.get('password')
+        singIn(user, password).then((user)=>{
+        console.log(user)
+        navigate('/home')
+        }).catch((err)=> console.log(err))
     };
 
     return (
