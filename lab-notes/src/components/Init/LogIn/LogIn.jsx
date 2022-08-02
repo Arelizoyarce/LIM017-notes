@@ -11,7 +11,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link, useNavigate } from 'react-router-dom';
 import Banner from '../Banner';
 import ButtonGoogle from './ButtonGoogle';
-import {singIn} from '../../../services/firebase.js'
+import { singIn } from '../../../services/firebase.js';
+import { useState } from "react";
 
 
 
@@ -50,16 +51,22 @@ const theme = createTheme({
 export default function LogIn() {
     const navigate = useNavigate()
 
+    const [user, setValue] = useState({
+        email: '',
+        password: ''
+    })
+
+    const handleChangeValues = ({ target: { name, value } }) => {
+        setValue({...user, [name]: value})
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        const user= data.get('email');
-        const password= data.get('password')
-        singIn(user, password).then((user)=>{
-        console.log(user)
-        navigate('/home')
-        }).catch((err)=> console.log(err))
+        singIn(user.email, user.password).then(() => {
+            navigate('/home')
+        }).catch((err) => console.log(err))
     };
+
 
     return (
         <ThemeProvider theme={theme}>
@@ -87,6 +94,7 @@ export default function LogIn() {
                         </Typography>
                         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
                             <TextField
+                                onChange={handleChangeValues}
                                 margin="normal"
                                 required
                                 fullWidth
@@ -97,6 +105,7 @@ export default function LogIn() {
                                 autoFocus
                             />
                             <TextField
+                                onChange={handleChangeValues}
                                 margin="normal"
                                 required
                                 fullWidth

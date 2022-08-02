@@ -10,18 +10,23 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { Link } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Banner from '../Banner';
-import {registerUser} from '../../../services/firebase.js'
+import {registerUser} from '../../../services/firebase.js';
+import { useState } from "react";
 
 export default function Register() {
+
+    const [userRegister, setValue] = useState({
+        user: '',
+        email: '',
+        password: ''
+    })
+
+    const handleChangesValues = ({ target: { name, value }})=>{
+        setValue({...userRegister, [name]: value})
+    }
     const handleSubmit = (event) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        // console.log({
-        //     user: data.get('user'),
-        //     email: data.get('email'),
-        //     password: data.get('password'),
-        // });
-        registerUser(data.get('email'), data.get('password'), data.get('user'))
+        registerUser(userRegister.email, userRegister.password, userRegister.user)
     };
 
     
@@ -82,6 +87,7 @@ export default function Register() {
                                 name="user"
                                 autoComplete="user"
                                 autoFocus
+                                onChange={handleChangesValues}
                             />
                             <TextField
                                 margin="normal"
@@ -92,6 +98,7 @@ export default function Register() {
                                 name="email"
                                 autoComplete="email"
                                 autoFocus
+                                onChange={handleChangesValues}
                             />
                             <TextField
                                 margin="normal"
@@ -102,6 +109,7 @@ export default function Register() {
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
+                                onChange={handleChangesValues}
                             />
                             <Button
                                 type="submit"
