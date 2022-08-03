@@ -6,16 +6,35 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import { useState } from "react";
+import {addNote} from '../../services/firebase.js'
 
 
 export default function CreateNotes() {
+    const [note, setNote] = useState({
+        id: localStorage.getItem('userId'),
+        title: '',
+        containerNote: ''
+    });
+    const handleChangesNoteValue = ({ target: { name, value } }) => {
+        setNote({ ...note, [name]: value })
+        console.log(note)
+    }
+
+    const submitNote=()=>{
+        addNote(note).then(()=>{
+            // setNote({title:'', containerNote: ''})
+            // console.log(note)
+        })
+    }
     return (
-        <Box sx={{ marginTop: 20, maxWidth: 300}}>
+        <Box sx={{ marginTop: 20, maxWidth: 300 }}>
             <Typography sx={{ fontSize: 40 }}>
                 Crear nueva nota
             </Typography>
-            <TextField id="standard-basic" label="Title" variant="standard" fullWidth />
+            <TextField id="standard-basic" label="Title" variant="standard" fullWidth name='title' onChange={handleChangesNoteValue} />
             <TextField
+                onChange={handleChangesNoteValue}
                 sx={{
                     mt: 5
                 }}
@@ -25,29 +44,9 @@ export default function CreateNotes() {
                 multiline
                 rows={4}
                 variant="standard"
+                name='containerNote'
             />
-            <Button>Submit</Button>
+            <Button onClick={submitNote}>Submit</Button>
         </Box>
-        // <Card sx={{ minWidth: 275 }}>
-        //   <CardContent>
-        //     <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-        //       Word of the Day
-        //     </Typography>
-        //     <Typography variant="h5" component="div">
-        //       be{bull}nev{bull}o{bull}lent
-        //     </Typography>
-        //     <Typography sx={{ mb: 1.5 }} color="text.secondary">
-        //       adjective
-        //     </Typography>
-        //     <Typography variant="body2">
-        //       well meaning and kindly.
-        //       <br />
-        //       {'"a benevolent smile"'}
-        //     </Typography>
-        //   </CardContent>
-        //   <CardActions>
-        //     <Button size="small">Learn More</Button>
-        //   </CardActions>
-        // </Card>
     );
 }

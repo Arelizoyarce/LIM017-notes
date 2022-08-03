@@ -62,7 +62,8 @@ export default function LogIn() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        singIn(user.email, user.password).then(() => {
+        singIn(user.email, user.password).then((data) => {
+            localStorage.setItem('userId',data.user.uid)
             navigate('/home')
         }).catch((err) => console.log(err))
     };

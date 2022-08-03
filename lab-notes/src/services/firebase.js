@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { getFirestore, collection, addDoc, query, onSnapshot } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -12,12 +13,16 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 const auth = getAuth()
+
+//Initialize Firestore
+const db = getFirestore(app);
+
 
 export const registerUser = (email, password, user) => {
     return createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
-        userCredential.user.displayName= user
+        userCredential.user.displayName = user
         sendEmailVerification(auth.currentUser)
     }).catch((error) => {
         console.log(error)
@@ -32,4 +37,12 @@ export const singIn = (email, password) => {
 export const googleSingIn = () => {
     const googleProvider = new GoogleAuthProvider();
     return signInWithPopup(auth, googleProvider);
+};
+
+export const addNote = (note) => {
+    return addDoc(collection(db, "notas"), note)
 }
+
+export const getNote = (callback) => {
+    return onSnapshot(query(collection(db, 'notas')), callback)
+  }
