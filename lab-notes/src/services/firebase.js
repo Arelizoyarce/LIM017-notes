@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { getFirestore, collection, addDoc, query, onSnapshot } from "firebase/firestore";
+import { getFirestore, collection, addDoc, query, onSnapshot, doc, deleteDoc } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -40,9 +40,14 @@ export const googleSingIn = () => {
 };
 
 export const addNote = (note) => {
-    return addDoc(collection(db, "notas"), note)
+    return addDoc(collection(db, 'notas'), note)
 }
 
 export const getNote = (callback) => {
     return onSnapshot(query(collection(db, 'notas')), callback)
-  }
+}
+
+export const deleteNote = (id) => {
+    const orderDocRef = doc(db, 'notas', id);
+    return deleteDoc(orderDocRef);
+}
