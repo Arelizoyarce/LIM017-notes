@@ -26,10 +26,12 @@ export default function AllNotes() {
     const getAllNotes = () => {
         getNote((query) => {
             const docs = [];
+            const idUser = localStorage.getItem('userId')
             query.forEach((doc) => {
                 docs.push({ ...doc.data(), idDoc: doc.id })
             });
-            setNotes(docs)
+            const docsUserLogin = docs.filter((e)=> e.id === idUser)
+            setNotes(docsUserLogin)
         })
     };
     //menu

@@ -6,8 +6,10 @@ import { useNavigate } from 'react-router-dom';
 
 export default function ButtonGoogle() {
     const navigate = useNavigate()
+    
     const handleSingInWithGoogle=()=>{
-        googleSingIn().then(()=>{
+        googleSingIn().then((data)=>{
+            localStorage.setItem('userId',data.user.uid)
             navigate('/home')
         })
     }

@@ -17,16 +17,26 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Dashboard from './Dashboard';
-
+import LogoutIcon from '@mui/icons-material/Logout';
+import {logOut} from '../../services/firebase.js'
+import { useNavigate } from 'react-router-dom';
 const drawerWidth = 240;
 
 function ResponsiveDrawer(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const navigate = useNavigate()
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  const handleLogOut = ()=>{
+  logOut().then(()=>{
+    localStorage.clear()
+    navigate('/login')
+  })
+  }
 
   const drawer = (
     <div>
@@ -44,18 +54,16 @@ function ResponsiveDrawer(props) {
           </ListItem>
         ))}
       </List>
-      <Divider />
+      <Divider></Divider>
       <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        <ListItemButton onClick={handleLogOut}>
+        <ListItemIcon>
+        <LogoutIcon></LogoutIcon>
+        </ListItemIcon>
+        <ListItemText>
+          Cerrar sesión
+        </ListItemText>
+        </ListItemButton>
       </List>
     </div>
   );

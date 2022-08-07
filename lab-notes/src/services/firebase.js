@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { getAuth, signOut, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { getFirestore, collection, addDoc, query, onSnapshot, doc, deleteDoc } from "firebase/firestore";
 
 // Your web app's Firebase configuration
@@ -38,6 +38,10 @@ export const googleSingIn = () => {
     const googleProvider = new GoogleAuthProvider();
     return signInWithPopup(auth, googleProvider);
 };
+
+export const logOut = () => {
+    return signOut(auth)
+}
 
 export const addNote = (note) => {
     return addDoc(collection(db, 'notas'), note)
