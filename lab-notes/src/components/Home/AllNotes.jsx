@@ -15,14 +15,16 @@ import Typography from '@mui/material/Typography';
 import EditIcon from '@mui/icons-material/Edit';
 import Divider from '@mui/material/Divider';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ModalEdit from './Modal.jsx';
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { getNote, deleteNote } from '../../services/firebase.js'
+import { getNote, deleteNote, getOneNote } from '../../services/firebase.js'
 
 export default function AllNotes() {
 
     //firebase and print data
     const [notes, setNotes] = useState([]);
+
     const getAllNotes = () => {
         getNote((query) => {
             const docs = [];
@@ -30,7 +32,7 @@ export default function AllNotes() {
             query.forEach((doc) => {
                 docs.push({ ...doc.data(), idDoc: doc.id })
             });
-            const docsUserLogin = docs.filter((e)=> e.id === idUser)
+            const docsUserLogin = docs.filter((e) => e.id === idUser)
             setNotes(docsUserLogin)
         })
     };
@@ -40,11 +42,14 @@ export default function AllNotes() {
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
+
     const handleClose = () => {
         //close menu
         setAnchorEl(null);
         //close Dialog
         setOpen(false);
+        //close Modal
+        setOpenModal(false)
     };
 
     //dialog
@@ -53,13 +58,30 @@ export default function AllNotes() {
         setOpen(true);
     };
 
+    //modal
+    const [openModal, setOpenModal] = useState(false);
+
     useEffect(() => {
         getAllNotes()
-    })
+    });
+
     //delete note
     const deleteNotes = (event) => {
         setOpen(false);
         deleteNote(event.target.id)
+    };
+
+    //enviar props a modal
+    const [titleModal, setTitleModal] = useState('');
+    const [descriptionModal, setDescriptionModal] = useState('')
+    const [docId, setDocId]=useState('')
+    const handleEditNote = (event) => {
+        getOneNote(event.target.id).then((note) => {
+            setOpenModal(true)
+            setDocId(event.target.id)
+            setTitleModal(note.data().title);
+            setDescriptionModal(note.data().containerNote)
+        });
     }
 
 
@@ -79,7 +101,7 @@ export default function AllNotes() {
                             <Menu onClose={handleClose}
                                 anchorEl={anchorEl}
                                 open={open}>
-                                <MenuItem onClick={handleClose} disableRipple>
+                                <MenuItem id={e.idDoc} onClick={handleEditNote} disableRipple>
                                     <EditIcon />
                                     Editar
                                 </MenuItem>
@@ -109,6 +131,13 @@ export default function AllNotes() {
                                         Eliminar
                                     </Button>
                                 </DialogActions>
+                            </Dialog>
+                            <Dialog open={openModal}>
+                                <ModalEdit
+                                    newTitleModal={titleModal}
+                                    description={descriptionModal}
+                                    docIdent={docId}
+                                />
                             </Dialog>
                         </CardActions>
                     </CardContent>

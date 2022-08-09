@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, signOut, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { getFirestore, collection, addDoc, query, onSnapshot, doc, deleteDoc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, query, onSnapshot, doc, deleteDoc, updateDoc, getDoc} from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -51,7 +51,18 @@ export const getNote = (callback) => {
     return onSnapshot(query(collection(db, 'notas')), callback)
 }
 
+export const getOneNote=(id)=>{
+    return getDoc(doc(db, 'notas', id))
+}
+
 export const deleteNote = (id) => {
     const orderDocRef = doc(db, 'notas', id);
     return deleteDoc(orderDocRef);
 }
+
+export const updateNote = (id, titleModal, description) => {
+    return updateDoc(doc(db, 'notas', id), {
+        title: titleModal,
+        containerNote: description
+    })
+  }
